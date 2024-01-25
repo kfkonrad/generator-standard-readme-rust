@@ -18,7 +18,6 @@ TODO: Fill out this long description.
 
 {% endif -%}
 ## Table of Contents
-
 {% if ap.add_security_section -%}
 - [Security](#security)
 {%- endif -%}
