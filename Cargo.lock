@@ -253,6 +253,7 @@ dependencies = [
  "inquire",
  "lazy_static",
  "paste",
+ "serde",
  "tera",
 ]
 

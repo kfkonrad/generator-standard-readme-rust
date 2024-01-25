@@ -1,14 +1,14 @@
 use crate::prompt;
-use anyhow;
+use serde::Serialize;
 
-#[derive(Debug)]
-pub struct RepoData {
+#[derive(Debug, Serialize)]
+struct RepoData {
     name: String,
     description: String,
 }
 
-#[derive(Debug)]
-pub struct AdditionalParts {
+#[derive(Debug, Serialize)]
+struct AdditionalParts {
     has_banner: bool,
     banner_path: Option<String>,
     add_standard_readme_badge: bool,
@@ -19,8 +19,8 @@ pub struct AdditionalParts {
     add_api_section: bool,
 }
 
-#[derive(Debug)]
-pub struct CollaborationData {
+#[derive(Debug, Serialize)]
+struct CollaborationData {
     maintainer_handle: String,
     use_github_com: bool,
     custom_domain: Option<String>,
@@ -33,7 +33,7 @@ pub struct CollaborationData {
     custom_year: Option<String>,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 pub struct StandardReadmeConfig {
     repo_data: RepoData,
     additional_parts: AdditionalParts,
