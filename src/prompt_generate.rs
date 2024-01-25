@@ -28,7 +28,6 @@ macro_rules! _without_optional {
 }
 pub(crate) use _without_optional as without_optional;
 
-
 macro_rules! _with_optional {
   ($ident:ident, $regex:expr) => {
     $crate::prompt_generate::without_optional!($ident, $regex);

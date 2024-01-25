@@ -22,5 +22,7 @@ pub fn bool(message: &str, default: bool) -> anyhow::Result<bool> {
 }
 
 pub trait Prompt {
-    fn prompt() -> anyhow::Result<Self> where Self: Sized;
+    fn prompt() -> anyhow::Result<Self>
+    where
+        Self: Sized;
 }

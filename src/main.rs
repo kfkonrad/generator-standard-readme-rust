@@ -1,11 +1,11 @@
+mod data_types;
 mod prompt;
 mod prompt_generate;
-mod data_types;
 
-use std::{fs::File, path::Path, process};
-use std::io::Write;
 use data_types::StandardReadmeConfig;
 use prompt::Prompt;
+use std::io::Write;
+use std::{fs::File, path::Path, process};
 
 use tera::{Context, Tera};
 
