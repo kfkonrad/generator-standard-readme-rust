@@ -20,3 +20,7 @@ pub fn bool(message: &str, default: bool) -> anyhow::Result<bool> {
         Err(e) => Err(anyhow::anyhow!(e)),
     }
 }
+
+pub trait Prompt {
+    fn prompt() -> anyhow::Result<Self> where Self: Sized;
+}
