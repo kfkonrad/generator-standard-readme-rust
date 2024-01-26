@@ -28,3 +28,8 @@ lto = true        # Enable Link Time Optimisation
 codegen-units = 1 # Reduced to increase optimisations.
 panic = 'abort'   # Abort on panic
 strip = "symbols" # Strip symbols from binary
+
+[[bin]]
+name = "standard-readme"
+bench = false
+path = "src/main.rs"
