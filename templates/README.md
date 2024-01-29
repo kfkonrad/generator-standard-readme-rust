@@ -84,7 +84,7 @@ TODO: Fill out this long description.
 ## Maintainers
 
 {% let maintainer_domain -%}
-{% if !src.collaboration_data.use_github_com -%}
+{% if src.collaboration_data.use_github_com -%}
   {%- let maintainer_domain = "github.com" -%}
 {%- else -%}
   {%- let maintainer_domain = custom_domain -%}

@@ -53,6 +53,5 @@ fn main() -> anyhow::Result<()> {
 
     let mut output = File::create("README.md")?;
     write!(output, "{rendered_readme}")?;
-    println!("{rendered_readme}");
     Ok(())
 }
