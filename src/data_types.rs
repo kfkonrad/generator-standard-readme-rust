@@ -38,7 +38,7 @@ pub struct StandardReadmeConfig {
 impl prompt::Prompt for RepoData {
     fn prompt() -> anyhow::Result<Self> {
         Ok(Self {
-            name: prompt::text("What is the name of your repo?")?,
+            name: prompt::repo_name()?,
             description: prompt::text("What is the description of this module?")?,
         })
     }
@@ -88,7 +88,7 @@ impl prompt::Prompt for CollaborationData {
         let allow_prs = prompt::bool("Are PRs accepted?", true)?;
         let use_mit = prompt::bool("Is an MIT license OK?", true)?;
         let custom_license = prompt::optional_text("What is your license?", !use_mit)?;
-        let license_holder = prompt::text("Who is the License holder (probably your name)?")?;
+        let license_holder = prompt::license_holder()?;
         let use_current_year = prompt::bool("Use the current year?", true)?;
         let custom_year =
             prompt::optional_years("What year(s) would you like to specify?", !use_current_year)?;
