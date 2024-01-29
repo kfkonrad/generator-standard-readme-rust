@@ -1,43 +1,38 @@
 use crate::prompt;
-use serde::Serialize;
 
-#[derive(Debug, Serialize)]
-struct RepoData {
-    name: String,
-    description: String,
+pub struct RepoData {
+    pub name: String,
+    pub description: String,
 }
 
-#[derive(Debug, Serialize)]
-struct AdditionalParts {
-    has_banner: bool,
-    banner_path: Option<String>,
-    add_standard_readme_badge: bool,
-    add_more_badges_todo: bool,
-    add_long_description_todo: bool,
-    add_security_section: bool,
-    add_background_section: bool,
-    add_api_section: bool,
+pub struct AdditionalParts {
+    pub has_banner: bool,
+    pub banner_path: Option<String>,
+    pub add_standard_readme_badge: bool,
+    pub add_more_badges_todo: bool,
+    pub add_long_description_todo: bool,
+    pub add_security_section: bool,
+    pub add_background_section: bool,
+    pub add_api_section: bool,
 }
 
-#[derive(Debug, Serialize)]
-struct CollaborationData {
-    maintainer_handle: String,
-    use_github_com: bool,
-    custom_domain: Option<String>,
-    mention_contributing_file: bool,
-    allow_prs: bool,
-    use_mit: bool,
-    custom_license: Option<String>,
-    license_holder: String,
-    use_current_year: bool,
-    custom_year: Option<String>,
+pub struct CollaborationData {
+    pub maintainer_handle: String,
+    pub use_github_com: bool,
+    pub custom_domain: Option<String>,
+    pub mention_contributing_file: bool,
+    pub allow_prs: bool,
+    pub use_mit: bool,
+    pub custom_license: Option<String>,
+    pub license_holder: String,
+    pub use_current_year: bool,
+    pub custom_year: Option<String>,
 }
 
-#[derive(Debug, Serialize)]
 pub struct StandardReadmeConfig {
-    repo_data: RepoData,
-    additional_parts: AdditionalParts,
-    collaboration_data: CollaborationData,
+    pub repo_data: RepoData,
+    pub additional_parts: AdditionalParts,
+    pub collaboration_data: CollaborationData,
 }
 
 impl prompt::Prompt for RepoData {

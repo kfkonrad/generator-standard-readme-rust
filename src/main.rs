@@ -6,10 +6,18 @@ use data_types::StandardReadmeConfig;
 use prompt::Prompt;
 use std::io::Write;
 use std::{fs::File, path::Path, process};
+use chrono::{Local, Datelike};
 
-use tera::{Context, Tera};
+use askama::Template;
 
-const README_TEMPLATE: &str = include_str!("../templates/README.md");
+#[derive(Template)]
+#[template(path = "../templates/README.md")]
+struct StandardReadmeTemplate<'a> {
+    src: StandardReadmeConfig,
+    current_year: i32,
+    // without a reference to an empty String Askama will complain about type mismatches
+    empty_string: &'a String,
+}
 
 fn main() -> anyhow::Result<()> {
     if Path::new("README.md").exists() {
@@ -19,15 +27,13 @@ fn main() -> anyhow::Result<()> {
             process::exit(0);
         }
     }
-    let mut tera = Tera::default();
-    tera.add_raw_template("README.md", README_TEMPLATE)?;
-    let mut context = Context::new();
 
     let standard_readme_config = StandardReadmeConfig::prompt()?;
-    context.insert("readme", &standard_readme_config);
-    let rendered_readme = tera.render("README.md", &context)?;
+    let hello = StandardReadmeTemplate { src: standard_readme_config, current_year: Local::now().year(), empty_string: &"".to_string() };
+    let rendered_readme = hello.render()?;
 
     let mut output = File::create("README.md")?;
     write!(output, "{rendered_readme}")?;
+    println!("{rendered_readme}");
     Ok(())
 }
