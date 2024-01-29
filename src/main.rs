@@ -9,6 +9,7 @@ use std::io::Write;
 use std::{fs::File, path::Path, process};
 
 use askama::Template;
+use clap::Parser;
 
 #[derive(Template)]
 #[template(path = "../templates/README.md")]
@@ -19,7 +20,21 @@ struct StandardReadmeTemplate<'a> {
     empty_string: &'a String,
 }
 
+#[derive(Parser)]
+#[command(name = "standard-readme")]
+#[command(author = "Kevin F. Konrad")]
+#[command(version = "0.1")]
+#[command(about = "Generate standard READMEs", long_about = None)]
+#[command(disable_version_flag = true)]
+struct Cli {
+    #[arg(short = 'v', short_alias = 'V', long, action = clap::builder::ArgAction::Version)]
+    version: (),
+}
+
 fn main() -> anyhow::Result<()> {
+    // this is used strictly for the -h/--help and -v/-V/--version flags
+    let _cli = Cli::parse();
+
     if Path::new("README.md").exists() {
         let override_readme = prompt::bool("Warning: found existing README.md. Override?", false)?;
         if !override_readme {
