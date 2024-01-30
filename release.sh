@@ -30,6 +30,27 @@ ensure_cross() {
   fi
 }
 
+ensure_git_cliff() {
+  if ! which -s git-cliff
+  then
+    cargo install git-cliff
+  fi
+}
+
+check_gh() {
+  if ! which -s gh
+  then
+    echo please install gh using one of the methods described in https://github.com/cli/cli#installation
+    exit 1
+  fi
+}
+
+ensure_cross
+ensure_git_cliff
+check_gh
+
+version=$(grep '^version' < Cargo.toml | xargs | sed 's/"$//;s/.*"//')
+
 macos="aarch64-apple-darwin x86_64-apple-darwin"
 windows="x86_64-pc-windows-gnu"
 linux="x86_64-unknown-linux-musl aarch64-unknown-linux-musl armv7-unknown-linux-musleabi armv7-unknown-linux-musleabihf"
@@ -45,7 +66,7 @@ then
   done
 fi
 
-ensure_cross
+
 for target in $windows $linux
 do
   echo cross build --release --target "$target"
@@ -73,3 +94,11 @@ do
   popd > /dev/null
   mv "${release_dir}/${target}.zip" target/bins
 done
+
+git tag -- "$version"
+git push --tags
+
+changelog=$(mktemp)
+git cliff --latest --strip all | sed 's/##/#/' > $changelog
+gh release create "$version" -F $changelog ./target/bins/* --draft
+rm $changelog
