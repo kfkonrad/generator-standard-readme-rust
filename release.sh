@@ -95,10 +95,25 @@ do
   mv "${release_dir}/${target}.zip" target/bins
 done
 
+if git tag | grep -q "^${version}$"
+then
+  echo git tag exists alreay, not re-releasing
+  exit 0
+fi
+
+if test "${1-}" = "--dry-run"
+then
+  echo performing dry run. The following action would take place:
+  echo - create tag and release with version: "$version"
+  echo - upload artifacts: ./targets/bins/*
+  echo - create changelog:
+  git cliff --unreleased --strip all | sed 's/##/#/'
+  exit 0
+fi
 git tag -- "$version"
 git push --tags
 
 changelog=$(mktemp)
 git cliff --latest --strip all | sed 's/##/#/' > $changelog
-gh release create "$version" -F $changelog ./target/bins/* --draft
+gh release create "$version" -F $changelog ./target/bins/*
 rm $changelog
