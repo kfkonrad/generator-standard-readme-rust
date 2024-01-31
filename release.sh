@@ -49,7 +49,7 @@ ensure_cross
 ensure_git_cliff
 check_gh
 
-version=$(grep '^version' < Cargo.toml | xargs | sed 's/"$//;s/.*"//')
+version=$(grep '^version' < Cargo.toml | sed 's/"$//;s/.*"//' | xargs)
 
 macos="aarch64-apple-darwin x86_64-apple-darwin"
 windows="x86_64-pc-windows-gnu"
@@ -101,7 +101,15 @@ then
   exit 0
 fi
 
-if test "${1-}" = "--dry-run"
+dry_run=${1-}
+
+if test -n "$(git status --porcelain)"
+then
+  echo dirty git state detected, forcing dry run
+  dry_run="--dry-run"
+fi
+
+if test "${dry_run}" = "--dry-run"
 then
   echo performing dry run. The following action would take place:
   echo - create tag and release with version: "$version"
