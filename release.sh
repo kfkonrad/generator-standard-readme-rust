@@ -83,7 +83,14 @@ fi
 mkdir -p target/bins
 for target in $unix_like
 do
-  tar -cZf "target/bins/${target}.tar.gz" -C "target/${target}/release" standard-readme
+  # if using bsd tar and packaging non-mac targets exclude macOS specific metadata
+  if tar --version | grep -qe bsd && echo target | grep -qve darwin
+  then
+    bsd_tar_flags="--no-xattrs"
+  else
+    bsd_tar_flags=""
+  fi
+  tar -cZf "target/bins/${target}.tar.gz" -C "target/${target}/release" $bsd_tar_flags standard-readme
 done
 
 for target in $windows
@@ -122,7 +129,7 @@ git tag -- "$version"
 git push --tags
 
 changelog=$(mktemp)
-git cliff --latest --strip all | sed 's/##/#/' > $changelog
+git cliff --latest --strip all | sed 's/##/#/' > "$changelog"
 set +f
-gh release create "$version" -F $changelog ./target/bins/*
-rm $changelog
+gh release create "$version" -F "$changelog" ./target/bins/*
+rm "$changelog"
