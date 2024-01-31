@@ -123,5 +123,6 @@ git push --tags
 
 changelog=$(mktemp)
 git cliff --latest --strip all | sed 's/##/#/' > $changelog
+set +f
 gh release create "$version" -F $changelog ./target/bins/*
 rm $changelog
