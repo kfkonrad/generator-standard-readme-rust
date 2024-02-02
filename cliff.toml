@@ -47,7 +47,7 @@ commit_parsers = [
     { message = "^style", group = "Styling" },
     { message = "^test", group = "Testing" },
     { message = "^chore\\(release\\): prepare for", skip = true },
-    { message = "^(chore|fill|change)", group = "Miscellaneous Tasks" },
+    { message = "^(chore|fill|change|bump)", group = "Miscellaneous Tasks" },
     { body = ".*security", group = "Security" },
     { body = ".*", group = "Other (unconventional)" },
 ]
