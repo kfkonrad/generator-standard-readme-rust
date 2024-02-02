@@ -22,11 +22,30 @@ See [the Standard Readme repo](https://github.com/RichardLitt/standard-readme) f
 
 ## Install
 
-Right now the only way to install `standard-readme` is via `cargo`. Precompiled binaries will become available in the
-future.
+You can download the correct version for your operating system and architecture using the `download.ps1` script. Don't
+let the name fool you, the script works with Bash/ZSH on Linux or macOS too!
+
+On Linux or macOS run:
 
 ```sh
-cargo install --git https://github.com/kfkonrad/generator-standard-readme-rust
+curl -s https://raw.githubusercontent.com/kfkonrad/generator-standard-readme-rust/main/download.ps1 | bash
+# OR
+wget -qO- https://raw.githubusercontent.com/kfkonrad/generator-standard-readme-rust/main/download.ps1 | bash
+```
+
+On Windows run:
+
+```pwsh
+Invoke-Expression ((Invoke-WebRequest -Uri "https://raw.githubusercontent.com/kfkonrad/generator-standard-readme-rust/main/download.ps1").Content)
+```
+
+If you don't like running scripts from the internet you can find and download the application in the
+[releases section of this repo](https://github.com/kfkonrad/generator-standard-readme-rust/releases) as well.
+
+You can also install from source using cargo:
+
+```sh
+cargo install standard-readme
 ```
 
 ## Usage
