@@ -1,3 +1,5 @@
+#![allow(clippy::useless_let_if_seq)]
+
 mod data_types;
 mod prompt;
 mod prompt_generate;

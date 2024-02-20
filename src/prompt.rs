@@ -26,16 +26,15 @@ pub fn bool(message: &str, default: bool) -> anyhow::Result<bool> {
 }
 
 fn git_user_name() -> Option<String> {
-    match {
+    if let Some(name) = {
         let repo = Repository::open(".").ok()?;
         let config = repo.config().ok()?;
         config.get_string("user.name").ok()
     } {
-        Some(name) => Some(name),
-        None => {
-            let config = Config::open_default().ok()?;
-            config.get_string("user.name").ok()
-        }
+        Some(name)
+    } else {
+        let config = Config::open_default().ok()?;
+        config.get_string("user.name").ok()
     }
 }
 
@@ -60,10 +59,12 @@ pub fn license_holder() -> anyhow::Result<String> {
 
 pub fn repo_name() -> anyhow::Result<String> {
     let full_current_dir = env::current_dir().unwrap_or_default();
-    let current_dir = match full_current_dir.components().last() {
-        Some(dirname) => dirname.as_os_str().to_string_lossy().to_string(),
-        None => String::new(),
-    };
+    let current_dir = full_current_dir
+        .components()
+        .last()
+        .map_or_else(String::new, |dirname| {
+            dirname.as_os_str().to_string_lossy().to_string()
+        });
     let suggested_name = current_dir.to_case(Case::Kebab);
     inquire_text_with_default("What is the name of your repo?", &suggested_name)
 }
