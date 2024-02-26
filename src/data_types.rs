@@ -81,7 +81,7 @@ impl prompt::Prompt for AdditionalParts {
 impl prompt::Prompt for CollaborationData {
     fn prompt() -> anyhow::Result<Self> {
         let maintainer_handle = prompt::text("What is the username of the main maintainer?")?;
-        let use_github_com = prompt::bool("Is the project host on github.com?", true)?;
+        let use_github_com = prompt::bool("Is the project hosted on github.com?", true)?;
         let custom_domain =
             prompt::optional_domain("Where is the project hosted?", !use_github_com)?;
         let mention_contributing_file = prompt::bool("Do you have a CONTRIBUTING.md file?", false)?;
