@@ -39,7 +39,7 @@ filter_unconventional = false
 split_commits = false
 # regex for parsing and grouping commits
 commit_parsers = [
-    { message = "^(add)", group = "Features" },
+    { message = "^(add|implement)", group = "Features" },
     { message = "^(fix|allow)", group = "Bug Fixes" },
     { message = "^doc", group = "Documentation" },
     { message = "^perf", group = "Performance" },
@@ -48,6 +48,7 @@ commit_parsers = [
     { message = "^test", group = "Testing" },
     { message = "^chore\\(release\\): prepare for", skip = true },
     { message = "^(chore|fill|change|bump|update)", group = "Miscellaneous Tasks" },
+    { message = "^Merge pull request", skip = true },  
     { body = ".*security", group = "Security" },
     { body = ".*", group = "Other (unconventional)" },
 ]
