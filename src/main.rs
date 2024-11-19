@@ -19,7 +19,7 @@ use clap::Parser;
 #[derive(Parser)]
 #[command(name = "standard-readme")]
 #[command(author = "Kevin F. Konrad")]
-#[command(version = "0.1")]
+#[command(version = "0.2")]
 #[command(about = "Generate standard READMEs", long_about = None)]
 #[command(disable_version_flag = true)]
 struct Cli {
