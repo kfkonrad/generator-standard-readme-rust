@@ -3,39 +3,40 @@
 mod data_types;
 mod prompt;
 mod prompt_generate;
+mod templates;
 
+use anyhow::anyhow;
+use askama::Template;
 use chrono::{Datelike, Local};
 use data_types::StandardReadmeConfig;
 use prompt::Prompt;
 use std::io::Write;
 use std::{fs::File, path::Path, process};
+use templates::{StandardReadmeTemplate, StandardReadmeTemplateDE};
 
-use askama::Template;
 use clap::Parser;
-
-#[derive(Template)]
-#[template(path = "../templates/README.md")]
-struct StandardReadmeTemplate<'a> {
-    src: StandardReadmeConfig,
-    current_year: i32,
-    // without a reference to an empty String Askama will complain about type mismatches
-    empty_string: &'a String,
-}
 
 #[derive(Parser)]
 #[command(name = "standard-readme")]
 #[command(author = "Kevin F. Konrad")]
-#[command(version = "0.1")]
+#[command(version = "0.2")]
 #[command(about = "Generate standard READMEs", long_about = None)]
 #[command(disable_version_flag = true)]
 struct Cli {
     #[arg(short = 'v', short_alias = 'V', long, action = clap::builder::ArgAction::Version)]
     version: (),
+    #[arg(
+        long,
+        short = 'l',
+        help = "Choose language for the Standard Readme (supported: en, de)",
+        default_value = "en",
+
+    )]
+    language: String,
 }
 
 fn main() -> anyhow::Result<()> {
-    // this is used strictly for the -h/--help and -v/-V/--version flags
-    let _cli = Cli::parse();
+    let cli = Cli::parse();
 
     if Path::new("README.md").exists() {
         let override_readme = prompt::bool("Warning: found existing README.md. Override?", false)?;
@@ -45,13 +46,25 @@ fn main() -> anyhow::Result<()> {
         }
     }
 
-    let standard_readme_config = StandardReadmeConfig::prompt()?;
-    let hello = StandardReadmeTemplate {
-        src: standard_readme_config,
-        current_year: Local::now().year(),
-        empty_string: &String::new(),
-    };
-    let rendered_readme = hello.render()?;
+    let empty_string = &String::new();
+
+    let rendered_readme = match cli.language.as_str() {
+        "en" => StandardReadmeTemplate {
+            src: StandardReadmeConfig::prompt()?,
+            current_year: Local::now().year(),
+            empty_string: empty_string,
+        }
+        .render()
+        .map_err(|e| anyhow!(e)),
+        "de" => StandardReadmeTemplateDE {
+            src: StandardReadmeConfig::prompt()?,
+            current_year: Local::now().year(),
+            empty_string: empty_string,
+        }
+        .render()
+        .map_err(|e| anyhow!(e)),
+        l => Err(anyhow!(format!("language {} not implemented", l))),
+    }?;
 
     let mut output = File::create("README.md")?;
     write!(output, "{rendered_readme}")?;

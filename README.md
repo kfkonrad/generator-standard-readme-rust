@@ -59,6 +59,9 @@ standard-readme
 
 You will be asked interactively for any additional information necessary to generate the README.
 
+By default this will generate the README in English, other languages can be select by using
+`standard-readme -l <LANGUAGE>`. Currently only English (`en`) and German (`de`) are supported.
+
 ## Publishing `standard-readme`
 
 To publish a new version of `standard-readme` on crates.io you can run `cargo publish` like with any other Rust project
