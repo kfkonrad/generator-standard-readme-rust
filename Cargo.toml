@@ -1,6 +1,6 @@
 [package]
 name = "standard-readme"
-version = "0.2.0"
+version = "0.2.1"
 edition = "2021"
 license = "MIT"
 description = "Generate Standard Readme-compatible READMEs"
@@ -18,7 +18,7 @@ chrono = "0.4.33"
 clap = { version = "4.4.18", features = ["derive", "std", "help", "error-context"], default-features = false }
 convert_case = "0.6.0"
 fancy-regex = "0.14.0"
-git2 = { version = "0.19.0", default-features = false }
+git2 = { version = "0.19.0", default-features = false, features = ["vendored-libgit2"]}
 inquire = "0.7.5"
 paste = "1.0.14"
 serde = { version = "1.0.195", features = ["derive"] }
